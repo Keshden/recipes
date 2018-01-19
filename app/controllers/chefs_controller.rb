@@ -1,5 +1,5 @@
 class ChefsController < ApplicationController
-before_action :set_chef, only: [:show] 
+before_action :set_chef, only: [:show, :edit, :update]
 
   def new
     @chef = Chef.new
@@ -15,8 +15,19 @@ before_action :set_chef, only: [:show]
     end
   end
 
-  def show
+  def edit
+  end
 
+  def update
+    if @chef.update(chef_params)
+      flash[:success] = "Account successfully updated"
+      redirect_to @chef
+    else
+      render 'edit'
+    end
+  end
+
+  def show
   end
 
   private
