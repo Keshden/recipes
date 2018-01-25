@@ -1,5 +1,5 @@
 class ChefsController < ApplicationController
-before_action :set_chef, only: [:show, :edit, :update]
+before_action :set_chef, only: [:show, :edit, :update, :delete]
 
   def index
     @chefs = Chef.paginate(page: params[:page], per_page: 5)
@@ -12,6 +12,7 @@ before_action :set_chef, only: [:show, :edit, :update]
   def create
     @chef = Chef.new(chef_params)
     if @chef.save
+      session[:chef_id] = @chef.id
       flash[:success] = "Welcome #{@chef.chefName} to the Recipes App"
       redirect_to chef_path(@chef)
     else
@@ -36,7 +37,6 @@ before_action :set_chef, only: [:show, :edit, :update]
   end
 
   def destroy
-    @chef = Chef.find(params[:id])
     @chef.destroy
     flash[:danger] = "Chef and all associated recipes have been deleted"
     redirect_to chefs_path
